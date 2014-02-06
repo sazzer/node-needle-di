@@ -1,0 +1,32 @@
+{
+  "name": "needle-di",
+  "description": "Lightweight Dependency Injection",
+  "version": "0.0.1",
+  "author": "Graham Cox <graham@grahamcox.co.uk>",
+  "keywords": [
+    "ioc",
+    "di",
+    "dependency injection"
+  ],
+  "dependencies": {
+    "q": "~1.0.0",
+    "selfish": "~0.3.2"
+  },
+  "devDependencies": {
+    "mocha": "~1.17.1",
+    "should": "~3.1.2",
+    "mocha-as-promised": "~2.0.0"
+  },
+  "main": "src/main/index",
+  "scripts": {
+    "test": "mocha --reporter spec --recursive src/spec"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sazzer/node-needle-di.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sazzer/node-needle-di.git/issues"
+  }
+}
