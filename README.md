@@ -1,5 +1,6 @@
 node-needle-di
 ==============
+[![Build Status](https://travis-ci.org/sazzer/node-needle-di.png?branch=master)](https://travis-ci.org/sazzer/node-needle-di)
 
 Lightweight Dependency Injection Framework for Node.js.
 
