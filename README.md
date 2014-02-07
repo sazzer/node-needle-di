@@ -9,7 +9,7 @@ Needle DI is a simple framework that allows all of your application logic to be 
 Some examples can be seen in the unit tests, but are expounded here for greater clarity.
 
 ## Constructing a static value
-```
+```javascript
 var Needle = require('needle-di');
 var needle = Needle.new();
 needle.register('static').staticValue(1);
@@ -17,7 +17,7 @@ needle.register('static').staticValue(1);
 In this example, we register an object with the name 'static' and configure it to always return the fixed value 1. If you have a simple value that you want to return, you don't need to worry about factory functions or modules or anything - you simply tell Needle what the value is. This has the advantage that you can then inject this value as a dependency to other objects, and if you change this one definition then you change it everywhere it is injected
 
 ## Constructing a dynamic value
-```
+```javascript
 var Needle = require('needle-di');
 var needle = Needle.new();
 needle.register('dynamic').factoryFunction(function() { return new Date(); });
@@ -26,7 +26,7 @@ needle.register('dynamic').factoryFunction(function() { return new Date(); });
 In this example, we register an object with the name 'dynamic' and configure it with a function to call when the object needs to be instantiated. The function can do anything at all that you want, and the return value is what is used by the Needle container. The static value example above actually makes use of this under the hood by registering a function that returned the passed in static value.
 
 ## Dependencies between objects
-```
+```javascript
 var Needle = require('needle-di');
 var needle = Needle.new();
 needle.register('a').staticValue(1);
@@ -37,7 +37,7 @@ needle.register('c').dependsOn('a').dependsOn('b').factoryFunction(function(args
 In this example, we register objects with the names 'a' and 'b', that have static values. We then register an object 'c' that has a value computed by adding the other two values together. We register 'c as depending on both 'a' and 'b', and thus when the factory function for 'c' is called it is given an object that contains the built values for 'a' and 'b' that we can trivially access.
 
 ## Objects that don't build anything
-```
+```javascript
 var Needle = require('needle-di');
 var needle = Needle.new();
 needle.register('a').staticValue(1);
@@ -46,13 +46,13 @@ needle.register('c').dependsOn('a').dependsOn('b');
 ```
 
 It is possible to register an object that doesn't actually build anything. In this case, what is built is actually the args object that was passed in - i.e. the dependencies of the object. The object 'c' above will actually build the following Javascript Object.
-```
+```javascript
 {'a': 1, 'b': 2}
 ```
 This is useful when you want to have a series of objects pulled together and passed around, and don't want to have to repeat the list of objects in multiple places.
 
 ## Objects requiring other files to be loaded
-```
+```javascript
 var Needle = require('needle-di');
 var needle = Needle.new();
 needle.register('userDao').requires('./lib/users/dao').factoryFunction(userDao) { return userDao.new(); })
@@ -60,7 +60,7 @@ needle.register('userDao').requires('./lib/users/dao').factoryFunction(userDao) 
 If you need to load code from another source file in order to instantiate an object, you can do so by specifying which files are required in the object definition. You can specify as many required sources as you want, and they will all be passed in to your factory function as parameters, in a similar manner to how requirejs works.
 
 ### Required Modules and Dependencies
-```
+```javascript
 var Needle = require('needle-di');
 var needle = Needle.new();
 needle.register('db.username').staticValue('username');
@@ -70,7 +70,7 @@ needle.register('userDao').dependsOn('db.username').dependsOn('db.password').req
 If you specify both a list of required modules and a list of dependencies in the container, the arguments passed to the factory function will still correctly contain all of the information. The list of required modules will be passed through first, in the same order that they were registered, and then the final argument will be the configuration object containing all of the dependencies that were defined. Note above that we have dependencies with periods in their name. This doesn't create an object hierarchy in the configuration object, but instead creates keys with periods in their names, so we have to de-reference them in an alternative way
 
 ## Object Lifecycles
-```
+```javascript
 var Needle = require('needle-di');
 var needle = Needle.new();
 needle.register('now').lazy().prototype().factoryFunction(function() { return new Date(); });
@@ -85,7 +85,7 @@ The second is called 'startTime'. This is defined as being Eager, which means it
 All of the above examples demonstrate how to register object definitions in the container, but not how to actually get the instances out. Doing this makes uses of Promises - we currently use [Q](https://github.com/kriskowal/q), purely because I quite like it.
 
 Once the container is configured, you need to actually build it. This is done as follows:
-```
+```javascript
 var Needle = require('needle-di');
 var needle = Needle.new();
 .....
@@ -98,7 +98,7 @@ The first function passed in to the promise will be called with a constructed co
 
 The container itself returns objects using promises as well, since building the objects can be a complicated task sometimes. 
 
-```
+```javascript
 var Needle = require('needle-di');
 var needle = Needle.new();
 .....
