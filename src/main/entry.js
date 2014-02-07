@@ -1,4 +1,6 @@
-var Base = require('selfish').Base;
+var Base = require('selfish').Base,
+    stack = require('callsite'),
+    path = require('path');
     
 
 /**
@@ -85,7 +87,21 @@ module.exports = Base.extend({
      * @return this, for chaining
      */
     requires: function(r) {
-        this.requiredModules.push(r);
+        var realFilename;
+
+        if (r.indexOf("/") === 0) {
+            // Filename is absolute
+            realFilename = r;
+        } else {
+            var callsite = stack(),
+                caller = callsite[1], // We know the caller we are interested in is always entry 1 in the call stack
+                callingFile = caller.getFileName(),
+                callingDirectory = path.dirname(callingFile);
+
+            realFilename = path.join(callingDirectory, r);
+        }
+
+        this.requiredModules.push(realFilename);
         return this;
     }
 });
